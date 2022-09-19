@@ -8,9 +8,13 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+    socket.on('chat message', (name, msg) => {
+      io.emit('chat message', `${name}: ${msg}`);
     });
+    socket.on("user connected", (name)=> {
+      socket.broadcast.emit("user connected", name + " đã kết nối");
+      // console.log(name + " đã kết nối");
+    })
 });
 
 http.listen(port, () => {
